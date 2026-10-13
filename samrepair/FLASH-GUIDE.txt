@@ -1,0 +1,89 @@
+===============================================================
+ INSTALL LINUX (postmarketOS/Nura) ON YOUR PHONE  -  SM-G610F
+ Read this fully once before starting.
+===============================================================
+
+IMPORTANT, READ FIRST
+- Claude (the one that ran commands on your PC) will NOT be available while
+  you are booted into the Lubuntu live USB, because Windows is off then.
+  Keep claude.ai open on ANOTHER device (or in Firefox inside Lubuntu) if you
+  want help. This guide + the script are made so you can do it alone.
+- This ERASES Android and installs experimental Linux. On THIS phone model
+  these DO NOT WORK afterwards: calls, SMS, mobile data, audio, camera, GPS.
+  These WORK: wifi, bluetooth, touchscreen, graphics, SD card.
+- Your phone is NOT bricked by a failed flash as long as nothing was written.
+  If a flash stops midway, the phone stays in download mode - ask for help,
+  do not keep retrying blindly.
+
+WHAT YOU NEED
+- The 8GB Lubuntu live USB (made with Rufus from D:\reverse\liveusb).
+- The phone + its USB cable.
+- Internet in Lubuntu (wifi or ethernet) - the script downloads ~1-2 GB.
+
+-------------------------------------------------
+STEP 1 - Boot the live USB
+-------------------------------------------------
+1. Leave the phone UNPLUGGED for now. Insert the Lubuntu USB.
+2. Restart the laptop, tap F12 (Lenovo) repeatedly -> pick the USB (UEFI).
+   (If F12 fails: Fn+F12, or the Novo button. If it won't boot: enter BIOS,
+    turn Secure Boot OFF, try again.)
+3. Choose "Try Lubuntu" (NOT install).
+4. Connect wifi (network icon, bottom-right).
+
+-------------------------------------------------
+STEP 2 - Run the flash script
+-------------------------------------------------
+1. Open "QTerminal" (menu -> System Tools -> QTerminal).
+2. Run:
+
+      bash /mnt/*/reverse/samrepair/flash-pmos.sh
+
+   If that says "not found", the Windows disk may be mounted elsewhere -
+   open the File Manager, click your Windows (NTFS) disk once to mount it,
+   then in its address bar note the path and run:
+      bash <that-path>/reverse/samrepair/flash-pmos.sh
+
+3. The script will:
+   - install tools, make a work area on your Windows D: disk,
+   - BUILD the image (~30-45 min, lots of text - normal),
+   - then tell you to deal with the phone.
+
+-------------------------------------------------
+STEP 3 - Phone into download mode (no buttons)
+-------------------------------------------------
+When the script asks, plug the phone in via USB.
+- If the phone still boots to Android: the script runs "adb reboot download"
+  for you - no buttons needed. (USB debugging is already on.)
+- If the phone is off/stuck and buttons are dead: you need a 300K USB jig
+  cable (plug it in -> boots straight to download mode). Then re-run the script.
+The script waits until it detects download mode, then asks you to type YES.
+
+-------------------------------------------------
+STEP 4 - Flash
+-------------------------------------------------
+- Type YES only when you are sure. It flashes the rootfs, then the kernel,
+  then the phone reboots into postmarketOS by itself.
+- First boot is slow (several minutes, blank/greyish screen is normal).
+- Log in: user "user", password "147147" (change it later with: passwd).
+
+-------------------------------------------------
+IF SOMETHING GOES WRONG
+-------------------------------------------------
+- "command not found" / tool missing  -> make sure wifi is connected, re-run.
+- Build fails                         -> run: pmbootstrap log   (read the end)
+- Phone not detected in download mode -> cable/port change; or charge + boot
+                                          Android first, then re-run.
+- Flash fails midway                  -> phone is in download mode, not dead.
+                                          Note the exact error. Re-entering
+                                          download mode and running
+                                          "pmbootstrap flasher flash_kernel"
+                                          (or flash_rootfs) usually resumes.
+                                          Ask Claude (claude.ai) with the error.
+- Want Android back                   -> flash stock SM-G610F firmware with
+                                          Heimdall (download mode). Keep a
+                                          stock firmware .tar.md5 set as backup.
+
+Files in this folder (D:\reverse\samrepair):
+  flash-pmos.sh   - the script above
+  FLASH-GUIDE.txt - this file
+===============================================================

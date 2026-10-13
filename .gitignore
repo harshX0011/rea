@@ -1,0 +1,27 @@
+# Huge / regenerable / third-party binaries
+liveusb/
+**/node_modules/
+rea-main/dist/
+rea-main/native/
+samrepair/tools/
+samrepair/pmos-work.ext4
+
+# Proprietary reverse-engineering extracts — DO NOT redistribute (copyright)
+anydesk/
+android-system-repair/
+
+# Binary blobs / archives
+*.iso
+*.exe
+*.msi
+*.node
+*.zip
+*.dll
+*.bin
+*.img
+*.gpr
+*.lock
+
+# local tooling
+.claude/
+
